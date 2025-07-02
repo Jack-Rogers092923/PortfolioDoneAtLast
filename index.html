@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1000, initial-scale=1.0"/>
+  <title>My Interactive Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav id="main-nav">
+    <span id="nav-name" style="display:none;">Jack Rogers</span>
+    <ul>
+      <li><button data-section="home">Home</button></li>
+      <li><button data-section="about">About Me</button></li>
+      <li><button data-section="skills">Skills</button></li>
+      <li><button data-section="projects">Projects</button></li>
+      <li><button data-section="contact">Contact</button></li>
+    </ul>
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="theme-toggle">
+        <input type="checkbox" id="theme-toggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </nav>
+  <div id="track-container" style="position:relative; top:-18px;">
+    <div id="track-pitboard">
+      <div class="pitboard-title">Jack Rogers</div>
+      <div class="pitboard-instruct">Drive the car to explore my portfolio!</div>
+      <div>
+        <strong class="controls-label">CONTROLS</strong>
+        <div class="controls-list" style="margin-top:10px; display: flex; flex-direction: column; gap: 6px;">
+          <span><span class="keycap">W</span> Forward</span>
+          <span><span class="keycap">S</span> Backward</span>
+          <span><span class="keycap">D</span> Right</span>
+          <span><span class="keycap">A</span> Left</span>
+          <span style="font-size:0.95em; color: #888; margin-top:4px;">(Arrow keys also work!)</span>
+        </div>
+      </div>
+    </div>
+    <img id="track-bg" src="Assets/RaceTrack.png" alt="Race Track" />
+    <svg id="car-svg" width="40" height="40" style="position:absolute; left:480px; top:380px; pointer-events:none;">
+      <image id="car" href="Assets/M4_Top.png" x="0" y="0" width="40" height="40" />
+    </svg>
+    <!-- Interactive buttons on the track -->
+    <div class="track-btn" data-info="Home" data-section="home" style="left:10%;top:60%;">Home</div>
+    <div class="track-btn" data-info="About Me" data-section="about" style="left:35%;top:73%;">About Me</div>
+    <div class="track-btn" data-info="Skills" data-section="skills" style="left:50%;top:15%;">Skills</div>
+    <div class="track-btn" data-info="Projects" data-section="projects" style="left:83%;top:30%;">Projects</div>
+    <div class="track-btn" data-info="Contact" data-section="contact" style="left:60%;top:65%;">Contact</div>
+    <div id="info-box" style="display:none;"></div>
+  </div>
+  <!-- Info section below the track for Option 2 -->
+  <div id="info-section">
+    <section id="home-section">
+      <h2>Welcome!</h2>
+      <p style="margin-bottom:18px;">Explore my interactive portfolio by driving the car to each section or using the navigation bar above.</p>
+      <div>
+        <strong class="controls-label">CONTROLS</strong>
+        <div class="controls-list">
+          <span><span class="keycap">W</span> Forward</span>
+          <span><span class="keycap">S</span> Backward</span>
+          <span><span class="keycap">D</span> Right</span>
+          <span><span class="keycap">A</span> Left</span>
+          <span style="font-size:0.95em; color: #888; margin-top:4px;">(Arrow keys also work!)</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="about-section" style="display:none;">
+      <div class="about-flex-row">
+        <div class="about-text">
+          <h2>About Me</h2>
+          <p>
+            I'm <b>Jack Rogers</b>, attending USI in the fall as a Computer Science major and CIS minor.<br>
+            I'm passionate about competitive racing and am actively pursuing my SCCA License.<br>
+            I played Castle Baseball for 4 years and am a 4-time recipient of the Jamey Carroll Award (Heart and Hustle, voted by teammates).<br>
+            I'm also part of the <b>Nextech CSForGood 2024 Team State Winners</b>.<br>
+            Outside of coding, I enjoy working out and staying active, which helps me maintain focus and energy for my projects.<br>
+            I also have a passion for car photography, capturing unique moments at the track and sharing the excitement of motorsports through my lens.
+          </p>
+        </div>
+        <div class="about-image-grid">
+          <div class="about-img-frame"></div>
+          <!-- ...repeat for 9 frames... -->
+        </div>
+      </div>
+    </section>
+
+    <section id="skills-section" style="display:none;">
+      <h2>Technical Skills</h2>
+      <div class="skills-flex-row">
+        <div class="logo-grid" id="skills-logo-grid">
+          <!-- ...your skill logos here... -->
+        </div>
+        <div class="skills-info-col">
+          <div id="skills-description" style="margin-top:24px;">
+            <p>
+              Here you'll find a showcase of the technical skills I've developed over time. Each icon represents a language, tool, or technology that I've learned through coursework, personal projects, or hands-on experience. Click on any skill to see how I acquired it and how I've applied it to real-world coding challenges and solutions.
+            </p>
+            <p style="font-weight:bold; margin-top:18px; color:#ff9800;">Click a language to get started.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Repeat for Projects and Contact sections -->
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

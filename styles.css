@@ -1,0 +1,731 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #121212;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  overflow: auto; /* allow scrolling if needed */
+}
+
+body.light-mode {
+  background: #fff;
+  color: #163060;
+}
+
+#track-container {
+  position: relative;
+  width: 100vw;
+  height: 800px; /* or use a responsive value if you want */
+  margin: 0 auto;
+  overflow: visible;
+  margin-top: 0;
+}
+
+/* Add to styles.css */
+
+#main-nav {
+  width: 100vw;
+  background: linear-gradient(180deg, #232323cc 80%, #181818cc 100%);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 24px #000a, 0 2px 8px #ff980033;
+  padding: 0;
+  margin: 0;
+  border-bottom: 2px solid #222;
+  position: relative;
+  z-index: 100;
+}
+body.light-mode #main-nav {
+  background: linear-gradient(180deg, #eaeaea 80%, #fff 100%);
+  box-shadow: 0 4px 24px #16306022, 0 2px 8px #16306011;
+  border-bottom: 2px solid #b0b0b0;
+}
+#main-nav.scrolled {
+  box-shadow: 0 8px 32px #ff980055, 0 2px 8px #000a;
+}
+#main-nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 0; /* Remove gap so we can use borders for separation */
+  list-style: none;
+  margin: 0;
+  padding: 12px 0;
+  background: none;
+}
+#main-nav li {
+  display: flex;
+  align-items: center;
+}
+
+/* Add subtle vertical line between nav buttons except the last one */
+#main-nav li:not(:last-child)::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, #333 10%, #ff9800 50%, #333 90%);
+  margin: 0 8px;
+  opacity: 0.5;
+  border-radius: 2px;
+}
+
+#main-nav button {
+  background: none;
+  border: none;
+  color: #ff9800;
+  font-size: 1.1em;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+#main-nav button:hover, #main-nav button:focus {
+  background: #ff9800;
+  color: #181818;
+  outline: none;
+  transform: scale(1.08);
+}
+#main-nav button.active {
+  background: #fff3e0;
+  color: #ff9800;
+  font-weight: bold;
+  box-shadow: 0 2px 8px #ff9800aa;
+}
+
+/* Background image of the track */
+#track-bg {
+  width: 100vw;
+  height: 800px; /* or use 'height: auto;' for aspect ratio */
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+#car-svg {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 12px #000a) drop-shadow(0 0 6px #ff9800aa);
+}
+
+.track-btn {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2px solid #ff9800;
+  background: linear-gradient(135deg, rgba(255,152,0,0.22) 60%, rgba(255,255,255,0.08) 100%);
+  box-shadow: 0 0 12px #ff9800, 0 0 2px #fff;
+  cursor: pointer;
+  opacity: 0.92;
+  transition: 
+    opacity 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1em;
+  text-align: center;
+  pointer-events: auto;
+  /* Add a subtle text shadow for readability */
+  text-shadow: 0 1px 4px #000a;
+}
+body.light-mode .track-btn {
+  color: #fff; /* Always white text */
+  border-color: #163060;
+  background: rgba(22,48,96,0.08);
+  text-shadow: none;
+  box-shadow: 0 0 24px #163060cc, 0 0 8px #16306099;
+}
+
+/* Normal state: blue text */
+body.light-mode .track-btn {
+  color: #163060;
+  border-color: #163060;
+  background: rgba(22,48,96,0.08);
+  text-shadow: none;
+  box-shadow: 0 0 24px #163060cc, 0 0 8px #16306099;
+}
+
+/* Hover/focus state: blue text (not white) */
+body.light-mode .track-btn:hover,
+body.light-mode .track-btn:focus {
+  color: #fff;
+  background: rgba(22,48,96,0.18);
+  box-shadow: 0 0 24px #163060cc, 0 0 8px #16306099;
+}
+
+#info-box {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 18px 24px;
+  border-radius: 10px;
+  min-width: 200px;
+  z-index: 10;
+  font-size: 1.1em;
+  pointer-events: none;
+}
+body.light-mode #info-box {
+  background: #fff;
+  color: #163060; /* Make body/info text blue in light mode */
+  box-shadow: 0 8px 32px #163060cc, 0 2px 8px #16306099; /* Blue glow */
+}
+
+#info-section {
+  min-height: 300px;
+  background: #181818;
+  color: #fff;
+  padding: 32px 24px;
+  font-size: 1.1em;
+  box-shadow: 0 2px 16px #0006;
+  border-radius: 0 0 16px 16px;
+  margin-top: 0;      /* Changed from 32px to 0 to move it higher */
+  margin-bottom: 48px; /* Optional: add space below if needed */
+  display: none; /* Hidden by default */
+}
+body.light-mode #info-section {
+  background: #fff;
+  color: #163060;
+  box-shadow: 0 8px 32px #163060cc, 0 2px 8px #16306099;
+  margin-top: 0;      /* Changed from 32px to 0 to move it higher */
+  margin-bottom: 48px; /* Optional: add space below if needed */
+}
+
+/* Remove or comment out this block to make headings blue in light mode
+body.light-mode #info-section h1,
+body.light-mode #info-section h2,
+body.light-mode #info-section h3,
+body.light-mode #info-section strong,
+body.light-mode #info-box h1,
+body.light-mode #info-box h2,
+body.light-mode #info-box h3,
+body.light-mode #info-box strong {
+  color: #fff;
+}
+*/
+
+body.light-mode {
+  background: #fff;
+  color: #163060;
+}
+body.light-mode #main-nav {
+  background: linear-gradient(180deg, #eaeaea 80%, #fff 100%);
+  box-shadow: 0 4px 24px #16306022, 0 2px 8px #16306011;
+  border-bottom: 2px solid #b0b0b0;
+}
+body.light-mode #main-nav button,
+body.light-mode .track-btn {
+  color: #163060;
+  background: none;
+}
+body.light-mode .track-btn {
+  color: #fff; /* Always white text */
+  border-color: #163060;
+  background: rgba(22,48,96,0.08);
+  text-shadow: none;
+  box-shadow: 0 0 24px #163060cc, 0 0 8px #16306099;
+}
+
+/* Blue glow for track buttons in light mode */
+body.light-mode .track-btn,
+body.light-mode .track-btn:hover {
+  border-color: #163060;
+  box-shadow: 0 0 24px #163060cc, 0 0 8px #16306099;
+  color: #fff; /* Keep text white */
+  background: rgba(22,48,96,0.08);
+  text-shadow: none;
+}
+
+/* Theme switch slider */
+.theme-switch-wrapper {
+  position: absolute;
+  top: 12px;
+  right: 32px;
+  z-index: 200;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 32px;
+  position: relative;
+  width: 64px;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.theme-switch .slider {
+  background: #222;
+  border-radius: 32px;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: background 0.3s;
+  box-shadow: 0 2px 8px #0004;
+}
+
+.theme-switch .slider:before {
+  content: "";
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  left: 4px;
+  bottom: 4px;
+  background: #fff;
+  transition: transform 0.3s, background 0.3s;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px #0003;
+}
+
+.theme-switch input:checked + .slider {
+  background: #eaeaea;
+}
+
+.theme-switch input:checked + .slider:before {
+  transform: translateX(32px);
+  background: #163060;
+}
+
+/* Optional: Add sun/moon icons */
+.theme-switch .slider:after {
+  content: "🌙";
+  position: absolute;
+  right: 10px;
+  top: 4px;
+  font-size: 18px;
+  transition: opacity 0.3s;
+  opacity: 1;
+}
+.theme-switch input:checked + .slider:after {
+  content: "☀️";
+  left: 10px;
+  right: auto;
+  opacity: 1;
+}
+
+/* Car shadow for dark mode */
+#car-svg {
+  filter: drop-shadow(0 4px 12px #000a) drop-shadow(0 0 6px #ff9800aa);
+}
+
+/* Car shadow for light mode: blue glow */
+body.light-mode #car-svg {
+  filter: drop-shadow(0 4px 12px #0004) drop-shadow(0 0 8px #163060cc);
+}
+
+.controls-label {
+  display: block;
+  font-weight: bold;
+  font-size: 1.15em;
+  color: #fff;
+}
+body.light-mode .controls-label {
+  color: #111;
+}
+
+.keycap {
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 2px 8px;
+  margin-right: 8px;
+  border-radius: 5px;
+  background: #222;
+  color: #fff;
+  font-weight: bold;
+  font-family: 'Consolas', 'Courier New', monospace;
+  box-shadow: 0 1px 3px #0003;
+  border: 1px solid #444;
+  text-align: center;
+}
+body.light-mode .keycap {
+  background: #eaeaea;
+  color: #163060;
+  border: 1px solid #b0b0b0;
+}
+
+.controls-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.logo-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  margin-top: 0; /* Make sure this is 0 or a positive value */
+  position: relative;
+  z-index: 1;
+}
+.logo-row {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  margin-top: 6px;
+}
+.skill-logo {
+  height: 90px;
+  width: 90px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px #16306044, 0 2px 8px #0002;
+  padding: 10px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  display: block;
+}
+.skill-logo:hover {
+  transform: scale(1.12);
+  box-shadow: 0 4px 16px #16306044;
+}
+
+/* Add spacing between skill bullet points */
+#info-section ul {
+  margin-top: 12px;
+  margin-bottom: 0;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: 1.08em;
+}
+
+/* Make skills section text larger and more readable */
+#info-section .skills-info-col,
+#info-section .skills-info-col * {
+  font-size: 1.25em;
+}
+
+#info-section h2 {
+  font-size: 2.6em; /* Make Technical Skills much bigger */
+  font-weight: bold;
+  margin-bottom: 18px;
+  letter-spacing: 1px;
+}
+
+.skill-label-bar span {
+  font-size: 1.25em;
+}
+
+/* Make only the GitHub link text black in light mode */
+body.light-mode a[href*="github.com"] {
+  color: #111 !important;
+}
+
+.skills-list li {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.skills-flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: 64px; /* More space between logos and text */
+  align-items: flex-start;
+  margin-top: 18px;
+}
+
+.skills-info-col {
+  flex: 1;
+  min-width: 280px;
+  max-width: 520px;
+  margin-left: 180px; /* Increased from 80px to 180px to move it further right */
+}
+
+.skill-info-bar {
+  width: 100%;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.skill-label-bar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.skill-label-bar span {
+  flex-shrink: 0;
+  font-weight: 600;
+  min-width: 120px;
+  font-size: 1.1em;
+}
+
+.skill-progress {
+  flex: 1;
+  height: 28px;              /* Increased from 16px to 28px */
+  background: #222;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px #0002;
+  display: flex;
+  align-items: center;
+  max-width: 320px;           /* Increased from 220px to 320px */
+}
+
+.skill-bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #ff9800 80%, #ffb74d 100%);
+  border-radius: 8px;
+  transition: width 0.5s;
+}
+body.light-mode .skill-progress {
+  background: #eaeaea;
+}
+body.light-mode .skill-bar {
+  background: linear-gradient(90deg, #163060 80%, #4f7ccf 100%);
+}
+
+/* About section layout */
+.about-flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;   /* Push text left, images right */
+  align-items: flex-start;
+  gap: 48px;
+  margin-top: 24px;
+}
+
+.about-text {
+  flex: 0 1 700px;
+  min-width: 220px;
+  max-width: 700px;
+  font-size: 1.35em;      /* Increased from 1.13em */
+  line-height: 1.7;       /* Slightly more readable */
+  text-align: left;
+  word-break: break-word;
+  hyphens: auto;
+  margin-left: 48px;
+}
+
+.about-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 170px);   /* Increased from 140px */
+  grid-template-rows: repeat(3, 170px);      /* Increased from 140px */
+  gap: 22px;                                 /* Slightly larger gap */
+  justify-items: center;
+  align-items: center;
+  margin-left: auto;
+  margin-top: 60px;      /* Push grid further down */
+}
+
+.about-img-frame {
+  width: 170px;          /* Increased from 140px */
+  height: 170px;         /* Increased from 140px */
+  background: #eaeaea;
+  border: 2.5px solid #bbb;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px #0002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+body:not(.light-mode) .about-img-frame {
+  background: #222;
+  border-color: #444;
+}
+
+.about-img-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #0005;
+  background: #222;
+  display: block;
+}
+
+#nav-name {
+  position: absolute;
+  left: 32px;
+  top: 21px; /* Increased from 16px to 21px for 5px lower */
+  font-size: 1.25em;
+  font-weight: bold;
+  color: #ff9800;
+  letter-spacing: 1px;
+  z-index: 150;
+  pointer-events: none;
+  user-select: none;
+  display: none;
+}
+body.light-mode #nav-name {
+  color: #163060;
+}
+
+#track-pitboard {
+  position: absolute;
+  top: 16px;
+  left: 32px;
+  width: 260px;
+  background: #222;
+  border: 4px solid #ff9800;
+  border-radius: 18px 8px 24px 8px;
+  box-shadow: 0 8px 32px #0006, 0 2px 8px #0002;
+  color: #fff;
+  z-index: 20;
+  padding: 18px 22px 14px 22px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none; /* So it doesn't block car movement */
+}
+
+/* Light mode for pitboard */
+body.light-mode #track-pitboard {
+  background: #fffbe7;
+  border-color: #163060;
+  color: #163060;
+  box-shadow: 0 8px 32px #16306044, 0 2px 8px #16306022;
+}
+
+body.light-mode #track-pitboard .pitboard-title {
+  color: #163060;
+  text-shadow: 0 2px 8px #fff8;
+}
+
+body.light-mode #track-pitboard .pitboard-instruct {
+  color: #163060;
+}
+
+body.light-mode #track-pitboard .controls-label {
+  color: #163060;
+}
+
+body.light-mode #track-pitboard .controls-list {
+  color: #163060;
+}
+
+body.light-mode #track-pitboard .keycap {
+  background: #eaeaea;
+  color: #163060;
+  border: 1px solid #b0b0b0;
+}
+
+#contact-section {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  background: #232323;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px #0006;
+  color: #fff;
+}
+
+body.light-mode #contact-section {
+  background: #f7f7fa;
+  color: #163060;
+}
+
+#contact-section h2 {
+  font-size: 2.2em;
+  margin-bottom: 24px;
+}
+
+#contact-form .form-row {
+  margin-bottom: 18px;
+}
+
+#contact-form input,
+#contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1.5px solid #ff9800;
+  background: #181818;
+  color: #fff;
+  font-size: 1.1em;
+  transition: border 0.2s, background 0.2s;
+}
+
+body.light-mode #contact-form input,
+body.light-mode #contact-form textarea {
+  background: #fff;
+  color: #163060;
+  border: 1.5px solid #163060;
+}
+
+#contact-form input:focus,
+#contact-form textarea:focus {
+  border-color: #ff9800;
+  outline: none;
+}
+
+#contact-form button {
+  background: #ff9800;
+  color: #181818;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-size: 1.15em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+#contact-form button:hover {
+  background: #ffa726;
+  color: #fff;
+}
+
+/* Make project description font larger and image bigger with more depth */
+.project-description {
+  font-size: 1.35em;      /* Larger font for project text */
+  line-height: 1.7;
+}
+
+.project-image-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Increase image size and add depth */
+}
+
+.project-image-right img {
+  max-width: 280px;       /* Larger image */
+  max-height: 220px;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #000a, 0 2px 8px #ff980088;
+  object-fit: contain;
+  background: #181818;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+
+.project-image-right img:hover {
+  transform: scale(1.04) rotate(-2deg);
+  box-shadow: 0 16px 48px #ff980099, 0 4px 16px #0008;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 900px) {
+  .project-image-right img {
+    max-width: 98vw;
+    max-height: 180px;
+  }
+}
