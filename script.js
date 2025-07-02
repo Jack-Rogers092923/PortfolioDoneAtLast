@@ -212,11 +212,11 @@ window.addEventListener('DOMContentLoaded', () => {
     <div class="about-img-frame"><img src="Assets/car.JPG" alt="Car"></div>
     <div class="about-img-frame"><img src="Assets/award.jpg" alt="Award"></div>
     <div class="about-img-frame"><img src="Assets/princess1.jpg" alt="Princess 1"></div>
-    <div class="about-img-frame"><img src="Assets/meChair.png" alt="Me in Chair"></div>
+    <div class="about-img-frame"><img src="Assets/meChair.PNG" alt="Me in Chair"></div>
     <div class="about-img-frame"><img src="Assets/dugout.JPEG" alt="Dugout"></div>
     <div class="about-img-frame"><img src="Assets/pitching.JPEG" alt="Pitching"></div>
     <div class="about-img-frame"><img src="Assets/car2.JPG" alt="Car 2"></div>
-    <div class="about-img-frame"><img src="Assets/tree.JPG" alt="Tree"></div>
+    <div class="about-img-frame"><img src="Assets/tree.jpg" alt="Tree"></div>
     <div class="about-img-frame"><img src="Assets/princess2.jpg" alt="Princess 2"></div>
   </div>
 </div>
